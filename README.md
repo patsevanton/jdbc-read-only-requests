@@ -7,6 +7,11 @@ yum install -y java-1.8.0-openjdk-devel git
 ```
 ## Install PostgreSQL
 
+## Clone repo
+```
+git clone https://github.com/patsevanton/jdbc-read-only-requests.git
+cd jdbc-read-only-requests
+```
 
 ## Compile and run
 ```
