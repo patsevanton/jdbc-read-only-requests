@@ -15,6 +15,8 @@ create database test with owner test;
 
 ### Create Table
 ```
+\c test
+
 CREATE TABLE scale_data (
    section NUMERIC NOT NULL,
    id1     NUMERIC NOT NULL,
@@ -23,6 +25,7 @@ CREATE TABLE scale_data (
 ```
 ### Generate data
 ```
+\c test
 INSERT INTO scale_data
 SELECT sections.*, gen.*
      , CEIL(RANDOM()*100) 
