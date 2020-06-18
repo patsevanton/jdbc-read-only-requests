@@ -6,6 +6,10 @@ Sample console Java app for jdbc read only requests
 yum install -y java-1.8.0-openjdk-devel git
 ```
 ## Install PostgreSQL
+```
+create user test with password 'password';
+create database test with owner test;
+```
 
 ## Clone repo
 ```
