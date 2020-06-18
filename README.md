@@ -10,6 +10,11 @@ yum install -y java-1.8.0-openjdk-devel git
 create user test with password 'password';
 create database test with owner test;
 ```
+## Disable ident in PostgreSQL
+```
+#host    all             all             127.0.0.1/32            ident
+#host    all             all             ::1/128                 ident
+```
 
 ## Clone repo
 ```
@@ -20,6 +25,6 @@ wget https://jdbc.postgresql.org/download/postgresql-42.2.14.jar
 
 ## Compile and run
 ```
-javac -cp "./postgresql.jar" JavaPostgreSql.java
+javac -cp "./postgresql-42.2.14.jar" JavaPostgreSql.java
 java -classpath .:./postgresql-42.2.14.jar JavaPostgreSql
 ```
