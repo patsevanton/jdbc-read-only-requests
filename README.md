@@ -14,6 +14,7 @@ create database test with owner test;
 ```
 #host    all             all             127.0.0.1/32            ident
 #host    all             all             ::1/128                 ident
+systemctl restart postgresql-9.6
 ```
 
 ## Clone repo
