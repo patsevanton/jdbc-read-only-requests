@@ -14,8 +14,18 @@ create database test with owner test;
 ```
 #host    all             all             127.0.0.1/32            ident
 #host    all             all             ::1/128                 ident
+```
+
+## Add custom user to pg-hba
+```
+host    test             test             127.0.0.1/32                 md5
+```
+
+### Restart PostgreSQL
+```
 systemctl restart postgresql-9.6
 ```
+
 
 ## Clone repo
 ```
