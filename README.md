@@ -42,7 +42,9 @@ SELECT sections.*, gen.*
 
 ### Add custom user to pg-hba
 ```
-host    test             test             127.0.0.1/32                 md5
+host    test             test             127.0.0.1/32            md5
+host    test             test             ::1/128                 md5
+
 ```
 
 ### Restart PostgreSQL
