@@ -13,10 +13,13 @@ create user test with password 'password';
 create database test with owner test;
 ```
 
+
 ### Create Table
 ```
-\c test
+/usr/pgsql-9.6/bin/psql --host=localhost -U test test
+```
 
+```
 CREATE TABLE scale_data (
    section NUMERIC NOT NULL,
    id1     NUMERIC NOT NULL,
