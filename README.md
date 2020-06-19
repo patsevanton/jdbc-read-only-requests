@@ -26,9 +26,9 @@ CREATE TABLE scale_data (
    id2     NUMERIC NOT NULL
 );
 ```
+
 ### Generate data
 ```
-\c test
 INSERT INTO scale_data
 SELECT sections.*, gen.*
      , CEIL(RANDOM()*100) 
