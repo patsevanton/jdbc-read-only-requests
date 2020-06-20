@@ -20,7 +20,8 @@ public class JavaPostgreSqlRepl {
 
 	//jdbc:postgresql://node1,node2,node3/accounting?targetServerType=primary
 	String drv = "jdbc:postgresql://";
-	String nodes = "localhost:5432,ip:port";	// МЕНЯЕМ ЗДЕСЬ адреса
+	//String nodes = "localhost:5432,ip:port";	// МЕНЯЕМ ЗДЕСЬ адреса. Если несколько нод
+	String nodes = "localhost:5432";	// МЕНЯЕМ ЗДЕСЬ адреса
 	String databse = "test";
 	String master = "targetServerType=primary";
 	String slave = "targetServerType=preferSecondary&loadBalanceHosts=true";
