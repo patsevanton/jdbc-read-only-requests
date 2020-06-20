@@ -19,23 +19,13 @@ public class JavaPostgreSqlRepl {
     public static void main(String[] args) {
 
 	//jdbc:postgresql://node1,node2,node3/accounting?targetServerType=primary
-	String drv = "jdbc:postgresql://";
-	//String nodes = "localhost:5432,ip:port";	// МЕНЯЕМ ЗДЕСЬ адреса. Если несколько нод
-	String nodes = "localhost:5432";	// МЕНЯЕМ ЗДЕСЬ адреса
-	String databse = "test";
-	String master = "targetServerType=primary";
-	String slave = "targetServerType=preferSecondary&loadBalanceHosts=true";
-
-        String url0 = drv + nodes + "/" + databse + "?";
-
-	String url = url0 + master;
+        String url = "jdbc:postgresql://localhost:5432/test?targetServerType=primary";
         String user = "root";
         String password = "";
 
 	//jdbc:postgresql://node1,node2,node3/accounting?targetServerType=preferSecondary&loadBalanceHosts=true
 	// Здесь, судя по логике, должен быть второй сервер
-        String url2 = url0 + slave;
-	//"jdbc:postgresql://localhost:5432/test?targetServerType=preferSecondary&loadBalanceHosts=true";
+        String url2 = "jdbc:postgresql://localhost:5432/test?targetServerType=preferSecondary&loadBalanceHosts=true";
         String user2 = "root";
         String password2 = "";
 
@@ -112,7 +102,7 @@ for(int i=0; i < 5; i++ ) { // заменить на while в релизе
 	    rnd = ThreadLocalRandom.current().nextInt(min, max + 1);
 //	    rnd = min + (int)(Math.random() * ((max - min) + 1)); // случайное число для java < 7
 //*
-//	    sql2 = "EXPLAIN ANALYSE select id1 from scale_data where id1=" + rnd; // release
+//	    sql = "EXPLAIN ANALYSE select id1 from scale_data where id1=" + rnd; // release
 	    sql = "explain analyze select id1 from scale_data where section = 1 and id1=" + rnd;
 
 	    //startTime = System.currentTimeMillis();
@@ -126,15 +116,15 @@ for(int i=0; i < 5; i++ ) { // заменить на while в релизе
             //millis = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime);
 
 	    // получаем время выполнения на сервере
-	    double server_time = 0.0;
+	    double t_1 = 0.0;
             while (rs.next()) {
 		str = rs.getString(1);
 		if( str.matches(patt) ) {
-			server_time += Double.parseDouble( str.replaceFirst(patt,"$1") );
+			t_1 += Double.parseDouble( str.replaceFirst(patt,"$1") );
 		}
             }
 
-	    s = "select: " + String.format("%.2f", millis) + " (" + String.format("%.2f", server_time) + ") ms";
+	    s = "select: " + String.format("%.2f", millis) + " (" + String.format("%.2f", t_1) + ") ms";
 
 //*/
 //*
@@ -162,17 +152,17 @@ for(int i=0; i < 5; i++ ) { // заменить на while в релизе
 
 	    //endTime = System.currentTimeMillis();
             millis = (double)TimeUnit.NANOSECONDS.toNanos(System.nanoTime() - startTime) / 1_000_000.0;
-	    server_time = 0.0;
+	    t_1 = 0.0;
             while (rs.next()) {
 		str = rs.getString(1);
 		if( str.matches(patt) ) {
-			server_time += Double.parseDouble( str.replaceFirst(patt,"$1") );
+			t_1 += Double.parseDouble( str.replaceFirst(patt,"$1") );
 		}
             }
 
             //System.out.println("1: " + sql);
             //System.out.println("2: " + sql2);
-	    s = "transact: " + String.format("%.2f", millis) + " (" + String.format("%.2f", server_time) + ") ms   " + s;
+	    s = "transact: " + String.format("%.2f", millis) + " (" + String.format("%.2f", t_1) + ") ms   " + s;
             System.out.println(s);
 
 	    stmt.close();
