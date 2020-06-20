@@ -13,10 +13,21 @@ create user test with password 'password';
 create database test with owner test;
 ```
 
+### Disable ident in PostgreSQL
+```
+#host    all             all             127.0.0.1/32            ident
+#host    all             all             ::1/128                 ident
+```
+
+### Add custom user to pg-hba
+```
+host    test             test             127.0.0.1/32            md5
+host    test             test             ::1/128                 md5
+```
 
 ### Create Table
 ```
-/usr/pgsql-9.6/bin/psql --host=localhost -U test test
+/usr/pgsql-12/bin/psql --host=localhost -U test test
 ```
 
 ```
@@ -35,19 +46,6 @@ SELECT sections.*, gen.*
   FROM GENERATE_SERIES(1, 300)     sections,
        GENERATE_SERIES(1, 900000) gen
  WHERE gen <= sections * 3000;
-```
-
-### Disable ident in PostgreSQL
-```
-#host    all             all             127.0.0.1/32            ident
-#host    all             all             ::1/128                 ident
-```
-
-### Add custom user to pg-hba
-```
-host    test             test             127.0.0.1/32            md5
-host    test             test             ::1/128                 md5
-
 ```
 
 ### Restart PostgreSQL
