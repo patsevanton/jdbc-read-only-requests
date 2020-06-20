@@ -19,13 +19,13 @@ public class JavaPostgreSqlRepl {
     public static void main(String[] args) {
 
 	//jdbc:postgresql://node1,node2,node3/accounting?targetServerType=primary
-        String url = "jdbc:postgresql://172.26.10.69:5000/test?targetServerType=primary";
+        String url = "jdbc:postgresql://localhost:5432/test?targetServerType=primary";
         String user = "test";
         String password = "password";
 
 	//jdbc:postgresql://node1,node2,node3/accounting?targetServerType=preferSecondary&loadBalanceHosts=true
 	// Здесь, судя по логике, должен быть второй сервер
-        String url2 = "jdbc:postgresql://172.26.10.69:5002/test?targetServerType=preferSecondary&loadBalanceHosts=true";
+        String url2 = "jdbc:postgresql://localhost:5432/test?targetServerType=preferSecondary&loadBalanceHosts=true";
         String user2 = "test";
         String password2 = "password";
 
