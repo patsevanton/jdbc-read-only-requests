@@ -25,6 +25,11 @@ host    test             test             127.0.0.1/32            md5
 host    test             test             ::1/128                 md5
 ```
 
+### Restart PostgreSQL
+```
+systemctl restart postgresql-12
+```
+
 ### Create Table
 ```
 /usr/pgsql-12/bin/psql --host=localhost -U test test
@@ -46,11 +51,6 @@ SELECT sections.*, gen.*
   FROM GENERATE_SERIES(1, 300)     sections,
        GENERATE_SERIES(1, 900000) gen
  WHERE gen <= sections * 3000;
-```
-
-### Restart PostgreSQL
-```
-systemctl restart postgresql-9.6
 ```
 
 
