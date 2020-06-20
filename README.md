@@ -61,8 +61,14 @@ cd jdbc-read-only-requests
 wget https://jdbc.postgresql.org/download/postgresql-42.2.14.jar
 ```
 
-## Compile and run
+## Compile and run if Single Server PostgreSQL
 ```
 javac -cp "./postgresql-42.2.14.jar" JavaPostgreSql.java
 java -classpath .:./postgresql-42.2.14.jar JavaPostgreSql
+```
+
+## Compile and run if Cluster PostgreSQL
+```
+javac -cp "./postgresql-42.2.14.jar" JavaPostgreSqlRepl.java
+java -classpath .:./postgresql-42.2.14.jar JavaPostgreSqlRepl
 ```
