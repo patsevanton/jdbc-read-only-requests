@@ -173,7 +173,7 @@ String nodes = "ip-адрес-Leader:5000,ip-адрес-Leader:5002";
 ```
 
 Должно получиться примерно так:
-![](https://habrastorage.org/webt/_b/g2/jb/_bg2jbhbz697cry2ctrmwgv9k_m.png)
+![](https://habrastorage.org/webt/0i/hk/ft/0ihkft7bcclqzt8cwexsler0zf4.png)
 
 ### Компилируем код и запускаем его
 ```
