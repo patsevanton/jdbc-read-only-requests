@@ -71,3 +71,16 @@ java -classpath .:./postgresql-42.2.14.jar JavaPostgreSqlRepl
 ```
 
 ## If PostgreSQL Cluster, then change jdbc
+
+Находим IP Primary Node с помощью команды
+```
+patronictl -c /etc/patroni/patroni.yml list
+```
+
+```
+String url = "jdbc:postgresql://localhost:5432/test?targetServerType=primary";
+```
+Поменять на 
+```
+String url = "jdbc:postgresql://ip-адрес-primary-node:5000/test?targetServerType=primary";
+```
