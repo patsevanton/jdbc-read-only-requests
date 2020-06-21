@@ -137,7 +137,7 @@ transact: 33587.53 (0.00) ms   select: 32825.42 (0.00) ms
 transact: 33551.31 (0.00) ms   select: 32797.89 (0.00) ms
 ```
 
-## Тестирование. Транзакции идут на Leader. Select идут на Perplica
+## Тестирование. Транзакции идут на Leader. Select идут на Sync Standby
 
 ### Правим jdbc строку подключения в файле JavaPostgreSqlRepl.java
 ```
@@ -154,7 +154,7 @@ String url2 = "jdbc:postgresql://localhost:5432/test?targetServerType=preferSeco
 ```
 меняем на 
 ```
-String url2 = "jdbc:postgresql://ip-адрес-Leader:5002/test?targetServerType=preferSecondary&loadBalanceHosts=true";
+String url2 = "jdbc:postgresql://ip-адрес-Sync-Standby:5002/test?targetServerType=preferSecondary&loadBalanceHosts=true";
 ```
 
 Должно получиться примерно так:
@@ -175,5 +175,4 @@ transact: 33405.12 (0.00) ms   select: 33026.28 (0.00) ms
 transact: 33400.46 (0.00) ms   select: 32965.08 (0.00) ms
 transact: 33394.38 (0.00) ms   select: 32948.28 (0.00) ms
 transact: 33332.10 (0.00) ms   select: 32897.06 (0.00) ms
-
 ```
