@@ -1,11 +1,12 @@
 # jdbc-read-only-requests
 Sample console Java app for jdbc read only requests
 
-## Устанавливаем зависимости там где вы будете запускать java приложение
+## PostgreSQL одиночный сервер
+
+### Устанавливаем зависимости
 ```
 yum install -y java-1.8.0-openjdk-devel git
 ```
-## PostgreSQL одиночный сервер
 
 ### Install PostgreSQL одиночный сервер
 Устанавливаем PostgreSQL 12 по инструции с сайта https://www.postgresql.org/download/linux/redhat/
@@ -96,6 +97,17 @@ patronictl -c /etc/patroni/patroni.yml list
 ```
 ![](https://habrastorage.org/webt/j1/4b/xw/j14bxwjwu8jdabj7ygew94jcx8c.png)
 
+### Устанавливаем зависимости
+```
+yum install -y java-1.8.0-openjdk-devel git
+```
+
+Создаем postgresql юзера test и базу данных test
+```
+create user test with password 'password';
+create database test with owner test;
+```
+
 ### Проверяем Read-Only реплику
 ```
 /usr/pgsql-12/bin/psql --host=172.26.10.66 -U test test
@@ -106,6 +118,36 @@ Type "help" for help.
 test=> create  user test1 with password 'password';
 ERROR:  cannot execute CREATE ROLE in a read-only transaction
 test=> 
+```
+
+### Создаем таблицу scale_data в бд test от пользователя test
+```
+/usr/pgsql-12/bin/psql --host=localhost -U test test
+```
+
+```
+CREATE TABLE scale_data (
+   section NUMERIC NOT NULL,
+   id1     NUMERIC NOT NULL,
+   id2     NUMERIC NOT NULL
+);
+```
+
+### Генерируем данные в таблице scale_data
+```
+INSERT INTO scale_data
+SELECT sections.*, gen.*
+     , CEIL(RANDOM()*100) 
+  FROM GENERATE_SERIES(1, 300)     sections,
+       GENERATE_SERIES(1, 9000) gen
+ WHERE gen <= sections * 300;
+```
+
+### Клонируем репо jdbc-read-only-requests
+```
+git clone https://github.com/patsevanton/jdbc-read-only-requests.git
+cd jdbc-read-only-requests
+wget https://jdbc.postgresql.org/download/postgresql-42.2.14.jar
 ```
 
 ### Правим jdbc строку подключения в файле JavaPostgreSqlRepl.java
@@ -130,3 +172,8 @@ String url2 = "jdbc:postgresql://ip-адрес-Leader:5002/test?targetServerType
 ![](https://habrastorage.org/webt/wu/q0/1m/wuq01mkxbm0jeqxsh88vjbcc4v8.png)
 
 
+### Rомпилируем код и запускаем его
+```
+javac -cp "./postgresql-42.2.14.jar" JavaPostgreSqlRepl.java
+java -classpath .:./postgresql-42.2.14.jar JavaPostgreSqlRepl
+```
