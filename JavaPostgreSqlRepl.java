@@ -137,7 +137,7 @@ for(int i=0; i < 10; i++ ) { // заменить на while в релизе
 		if( str.matches(patt) ) {
 			server_time += Double.parseDouble( str.replaceFirst(patt,"$1") );
 		}
-		System.out.println( str );
+		//System.out.println( str );
             }
 
             stmt2.close();
