@@ -36,7 +36,7 @@ install_pgbouncer: false
 ```
 patronictl -c /etc/patroni/patroni.yml list
 ```
-![](https://habrastorage.org/webt/j1/4b/xw/j14bxwjwu8jdabj7ygew94jcx8c.png)
+![](https://habrastorage.org/webt/14/g9/kl/14g9kluwlob-bcp3nkci4huoyoe.png)
 
 ### Устанавливаем зависимости на Leader, так как на нем будем запускать Java приложение
 ```
