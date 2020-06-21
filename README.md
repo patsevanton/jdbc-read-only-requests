@@ -197,30 +197,4 @@ transact: 0.80 (0.10) ms   select: 0.94 (0.09) ms
 transact: 0.86 (0.12) ms   select: 0.79 (0.09) ms
 ```
 
-## Уменьшаем размер бд
-### Создаем таблицу scale_data в бд test от пользователя test
-```
-/usr/pgsql-12/bin/psql --host=localhost -U test test
-```
-
-```
-CREATE TABLE scale_data (
-   section NUMERIC NOT NULL,
-   id1     NUMERIC NOT NULL,
-   id2     NUMERIC NOT NULL
-);
-```
-
-### Генерируем данные в таблице scale_data
-```
-INSERT INTO scale_data
-SELECT sections.*, gen.*
-     , CEIL(RANDOM()*100) 
-  FROM GENERATE_SERIES(1, 300)     sections,
-       GENERATE_SERIES(1, 90000) gen
- WHERE gen <= sections * 3000;
-```
-
-Проверяем размер БД после генерации данных:
-
-![](https://habrastorage.org/webt/vc/4x/vo/vc4xvomyljgyb3paoo4lk-o_ifc.png)
+## Запускаем 20 экземпляров приложения одновременно
