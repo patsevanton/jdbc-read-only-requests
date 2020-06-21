@@ -70,6 +70,18 @@ javac -cp "./postgresql-42.2.14.jar" JavaPostgreSqlRepl.java
 java -classpath .:./postgresql-42.2.14.jar JavaPostgreSqlRepl
 ```
 
+## Проверяем Read-Only реплику
+```
+/usr/pgsql-12/bin/psql --host=172.26.10.66 -U test test
+Password for user test: 
+psql (12.3)
+Type "help" for help.
+
+test=> create  user test1 with password 'password';
+ERROR:  cannot execute CREATE ROLE in a read-only transaction
+test=> 
+```
+
 ## If PostgreSQL Cluster, then change jdbc
 
 Находим IP Leader с помощью команды
