@@ -158,7 +158,7 @@ String url2 = "jdbc:postgresql://ip-адрес-Sync-Standby:5002/test?targetServ
 ```
 
 Должно получиться примерно так:
-![](https://habrastorage.org/webt/7y/e5/5b/7ye55bh_pyoktphlqnecd4qcux8.png)
+![](https://habrastorage.org/webt/2x/vs/s2/2xvss2qrlcawkmijnznrgz5yb_a.png)
 
 
 ### Компилируем код и запускаем его
