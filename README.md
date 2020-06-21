@@ -53,7 +53,7 @@ create database test with owner test;
 
 ### Проверяем Read-Only реплику
 ```
-/usr/pgsql-12/bin/psql --host=172.26.10.66 -U test test
+/usr/pgsql-12/bin/psql --host=172.26.10.74 -U test test
 Password for user test: 
 psql (12.3)
 Type "help" for help.
