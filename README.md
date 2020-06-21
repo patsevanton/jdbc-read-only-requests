@@ -97,7 +97,7 @@ CLUSTER scale_data;
 
 Проверяем размер БД после генерации данных:
 
-![](https://habrastorage.org/webt/xm/7b/th/xm7bthcpwlkcrzut32igvnam96a.png)
+![](https://habrastorage.org/webt/3q/u4/rj/3qu4rjixnvl8yx1n0i2htsgbia8.png)
 
 ### Клонируем репо jdbc-read-only-requests
 ```
