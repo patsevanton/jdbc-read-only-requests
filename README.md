@@ -183,12 +183,18 @@ java -classpath .:./postgresql-42.2.14.jar JavaPostgreSqlRepl
 
 Время выполнения транзакций и select, если идет обращение только на Leader
 ```
-PostgreSQL 12.3 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-39), 64-bit
-transact: 34454.46 (0.00) ms   select: 33060.40 (0.00) ms
-transact: 33405.12 (0.00) ms   select: 33026.28 (0.00) ms
-transact: 33400.46 (0.00) ms   select: 32965.08 (0.00) ms
-transact: 33394.38 (0.00) ms   select: 32948.28 (0.00) ms
-transact: 33332.10 (0.00) ms   select: 32897.06 (0.00) ms
+Master: PostgreSQL 12.3 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-39), 64-bit
+Slave: PostgreSQL 12.3 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-39), 64-bit
+transact: 4.14 (0.89) ms   select: 63.41 (37.40) ms
+transact: 0.80 (0.10) ms   select: 0.96 (0.12) ms
+transact: 0.74 (0.10) ms   select: 0.76 (0.10) ms
+transact: 0.86 (0.14) ms   select: 0.72 (0.09) ms
+transact: 0.82 (0.10) ms   select: 4.94 (0.11) ms
+transact: 1.44 (0.12) ms   select: 0.84 (0.10) ms
+transact: 0.78 (0.10) ms   select: 1.64 (0.10) ms
+transact: 1.56 (0.10) ms   select: 0.79 (0.09) ms
+transact: 0.80 (0.10) ms   select: 0.94 (0.09) ms
+transact: 0.86 (0.12) ms   select: 0.79 (0.09) ms
 ```
 
 ## Уменьшаем размер бд
