@@ -86,6 +86,10 @@ SELECT sections.*, gen.*
  WHERE gen <= sections * 3000;
 ```
 
+Проверяем размер БД после генерации данных:
+
+![](https://habrastorage.org/webt/ce/2a/st/ce2astdeuhsaq_7hk6oul4km4is.png)
+
 ### Клонируем репо jdbc-read-only-requests
 ```
 git clone https://github.com/patsevanton/jdbc-read-only-requests.git
