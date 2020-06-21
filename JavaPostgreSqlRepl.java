@@ -106,7 +106,7 @@ public class JavaPostgreSqlRepl {
 
 //            stmt = con.createStatement();
 //while(true) {
-for(int i=0; i < 10; i++ ) { // заменить на while в релизе
+for(int i=0; i < 100; i++ ) { // заменить на while в релизе
 
 	    s = "";
 	    sql = "";
