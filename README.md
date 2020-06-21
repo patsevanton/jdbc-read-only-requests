@@ -118,7 +118,7 @@ String url2 = "jdbc:postgresql://ip-адрес-Leader:5002/test?targetServerType
 ```
 
 Должно получиться примерно так:
-![](https://habrastorage.org/webt/wu/q0/1m/wuq01mkxbm0jeqxsh88vjbcc4v8.png)
+![](https://habrastorage.org/webt/7y/e5/5b/7ye55bh_pyoktphlqnecd4qcux8.png)
 
 
 ### Rомпилируем код и запускаем его
