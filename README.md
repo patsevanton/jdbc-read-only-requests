@@ -202,3 +202,5 @@ SELECT sections.*, gen.*
 ```
 
 Проверяем размер БД после генерации данных:
+
+![](https://habrastorage.org/webt/vc/4x/vo/vc4xvomyljgyb3paoo4lk-o_ifc.png)
