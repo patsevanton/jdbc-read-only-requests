@@ -136,7 +136,7 @@ javac -cp "./postgresql-42.2.14.jar" JavaPostgreSqlRepl.java
 java -classpath .:./postgresql-42.2.14.jar JavaPostgreSqlRepl
 ```
 
-Время выполнения транзакций и select, если идет обращение только на Leader
+Время выполнения транзакций, которые идут на Leader, и select, которые идут на Replica
 ```
 Master: PostgreSQL 12.3 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-39), 64-bit
 Slave: PostgreSQL 12.3 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-39), 64-bit
