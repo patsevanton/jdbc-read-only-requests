@@ -3,6 +3,12 @@ Sample console Java app for jdbc read only requests
 
 ## PostgreSQL кластер
 
+## Характеристики PostgreSQL кластера
+
+Возьмем виртуальные машины по 2 ГБ ОЗУ
+
+## Установка
+
 Устанавливаем PostgreSQL кластер из репозитория https://github.com/vitabaks/postgresql_cluster
 ```
 git clone https://github.com/vitabaks/postgresql_cluster
@@ -23,6 +29,8 @@ install_pgbouncer: false
 ```
 
 Нужно поправить конфигурацию Postgresql.conf в vars/main.yml, например по http://pgconfigurator.cybertec.at/
+
+## Проверка кластера
 
 После установки у вас должно быть примерно такая картина
 ```
