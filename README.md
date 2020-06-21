@@ -86,6 +86,14 @@ SELECT sections.*, gen.*
  WHERE gen <= sections * 3000;
 ```
 
+### Кластеризуем таблицу scale_data
+```
+CREATE INDEX scale_slow ON scale_data (section, id1, id2);
+
+ALTER TABLE scale_data CLUSTER ON scale_slow;
+CLUSTER scale_data;
+```
+
 Проверяем размер БД после генерации данных:
 
 ![](https://habrastorage.org/webt/xm/7b/th/xm7bthcpwlkcrzut32igvnam96a.png)
