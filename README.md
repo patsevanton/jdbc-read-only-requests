@@ -1,13 +1,13 @@
 # jdbc-read-only-requests
 Sample console Java app for jdbc read only requests
 
-## Prepare
+## Устанавливаем зависимости там где вы будете запускать java приложение
 ```
 yum install -y java-1.8.0-openjdk-devel git
 ```
-## PostgreSQL
+## PostgreSQL одиночный сервер
 
-### Install PostgreSQL
+### Install PostgreSQL одиночный сервер
 Устанавливаем PostgreSQL 12 по инструции с сайта https://www.postgresql.org/download/linux/redhat/
 
 ```
@@ -15,24 +15,24 @@ create user test with password 'password';
 create database test with owner test;
 ```
 
-### Disable ident in PostgreSQL
+### Отключаем ident в pg_hba.conf
 ```
 #host    all             all             127.0.0.1/32            ident
 #host    all             all             ::1/128                 ident
 ```
 
-### Add custom user to pg-hba
+### Добавляем юзера test в pg_hba.conf
 ```
 host    test             test             127.0.0.1/32            md5
 host    test             test             ::1/128                 md5
 ```
 
-### Restart PostgreSQL
+### Перезагружаем PostgreSQL
 ```
 systemctl restart postgresql-12
 ```
 
-### Create Table
+### Создаем таблицу scale_data
 ```
 /usr/pgsql-12/bin/psql --host=localhost -U test test
 ```
@@ -45,7 +45,7 @@ CREATE TABLE scale_data (
 );
 ```
 
-### Generate data
+### Генерируем данные в таблице scale_data
 ```
 INSERT INTO scale_data
 SELECT sections.*, gen.*
@@ -56,7 +56,7 @@ SELECT sections.*, gen.*
 ```
 
 
-## Clone repo
+### Клонируем репо jdbc-read-only-requests
 ```
 git clone https://github.com/patsevanton/jdbc-read-only-requests.git
 cd jdbc-read-only-requests
@@ -64,13 +64,39 @@ wget https://jdbc.postgresql.org/download/postgresql-42.2.14.jar
 ```
 
 
-## If PostgreSQL Single, then compile and run
+### Для одиночного PostgreSQL компилируем код и запускаем его
 ```
 javac -cp "./postgresql-42.2.14.jar" JavaPostgreSqlRepl.java
 java -classpath .:./postgresql-42.2.14.jar JavaPostgreSqlRepl
 ```
 
-## Проверяем Read-Only реплику
+## PostgreSQL кластер
+
+Устанавливаем PostgreSQL кластер из репозитория https://github.com/vitabaks/postgresql_cluster
+```
+git clone https://github.com/vitabaks/postgresql_cluster
+```
+Изменяем адреса серверов в inventory на свои. 
+
+Выставляем синхронный режим
+```
+synchronous_mode: true
+```
+Активируем Haproxy, который может отпределять кто Leader, а кто c помощью health check
+```
+with_haproxy_load_balancing: true
+```
+Выключаем pgbouncer, так как оне будет мешать экперименту.
+```
+install_pgbouncer: false
+```
+После установки у вас должно быть примерно такая картина
+```
+patronictl -c /etc/patroni/patroni.yml list
+```
+![](https://habrastorage.org/webt/j1/4b/xw/j14bxwjwu8jdabj7ygew94jcx8c.png)
+
+### Проверяем Read-Only реплику
 ```
 /usr/pgsql-12/bin/psql --host=172.26.10.66 -U test test
 Password for user test: 
@@ -82,7 +108,7 @@ ERROR:  cannot execute CREATE ROLE in a read-only transaction
 test=> 
 ```
 
-## If PostgreSQL Cluster, then change jdbc
+### If PostgreSQL Cluster, then change jdbc
 
 Находим IP Leader с помощью команды
 ```
@@ -109,4 +135,4 @@ String url2 = "jdbc:postgresql://ip-адрес-Leader:5002/test?targetServerType
 Должно получиться примерно так:
 ![](https://habrastorage.org/webt/wu/q0/1m/wuq01mkxbm0jeqxsh88vjbcc4v8.png)
 
-![](https://habrastorage.org/webt/j1/4b/xw/j14bxwjwu8jdabj7ygew94jcx8c.png)
+
