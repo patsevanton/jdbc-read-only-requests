@@ -1,76 +1,6 @@
 # jdbc-read-only-requests
 Sample console Java app for jdbc read only requests
 
-## PostgreSQL одиночный сервер
-
-### Устанавливаем зависимости
-```
-yum install -y java-1.8.0-openjdk-devel git
-```
-
-### Install PostgreSQL одиночный сервер
-Устанавливаем PostgreSQL 12 по инструции с сайта https://www.postgresql.org/download/linux/redhat/
-
-```
-create user test with password 'password';
-create database test with owner test;
-```
-
-### Отключаем ident в pg_hba.conf
-```
-#host    all             all             127.0.0.1/32            ident
-#host    all             all             ::1/128                 ident
-```
-
-### Добавляем юзера test в pg_hba.conf
-```
-host    test             test             127.0.0.1/32            md5
-host    test             test             ::1/128                 md5
-```
-
-### Перезагружаем PostgreSQL
-```
-systemctl restart postgresql-12
-```
-
-### Создаем таблицу scale_data
-```
-/usr/pgsql-12/bin/psql --host=localhost -U test test
-```
-
-```
-CREATE TABLE scale_data (
-   section NUMERIC NOT NULL,
-   id1     NUMERIC NOT NULL,
-   id2     NUMERIC NOT NULL
-);
-```
-
-### Генерируем данные в таблице scale_data
-```
-INSERT INTO scale_data
-SELECT sections.*, gen.*
-     , CEIL(RANDOM()*100) 
-  FROM GENERATE_SERIES(1, 300)     sections,
-       GENERATE_SERIES(1, 900000) gen
- WHERE gen <= sections * 3000;
-```
-
-
-### Клонируем репо jdbc-read-only-requests
-```
-git clone https://github.com/patsevanton/jdbc-read-only-requests.git
-cd jdbc-read-only-requests
-wget https://jdbc.postgresql.org/download/postgresql-42.2.14.jar
-```
-
-
-### Для одиночного PostgreSQL компилируем код и запускаем его
-```
-javac -cp "./postgresql-42.2.14.jar" JavaPostgreSqlRepl.java
-java -classpath .:./postgresql-42.2.14.jar JavaPostgreSqlRepl
-```
-
 ## PostgreSQL кластер
 
 Устанавливаем PostgreSQL кластер из репозитория https://github.com/vitabaks/postgresql_cluster
@@ -91,6 +21,9 @@ with_haproxy_load_balancing: true
 ```
 install_pgbouncer: false
 ```
+
+Нужно поправить конфигурацию Postgresql.conf в vars/main.yml, например по http://pgconfigurator.cybertec.at/
+
 После установки у вас должно быть примерно такая картина
 ```
 patronictl -c /etc/patroni/patroni.yml list
