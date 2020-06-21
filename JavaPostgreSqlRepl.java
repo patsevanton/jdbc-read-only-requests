@@ -20,7 +20,7 @@ public class JavaPostgreSqlRepl {
 
 	//jdbc:postgresql://node1,node2,node3/accounting?targetServerType=primary
 	String drv = "jdbc:postgresql://";
-	String nodes = "localhost:5432,ip:port";	// МЕНЯЕМ ЗДЕСЬ адреса, указываем все адреса (master и реплики)
+	String nodes = "172.26.10.73:5000";	// МЕНЯЕМ ЗДЕСЬ адреса, указываем все адреса (master и реплики)
 	String databse = "test";
 	String master = "targetServerType=primary";
 	String slave = "targetServerType=preferSecondary&loadBalanceHosts=true";
@@ -28,15 +28,15 @@ public class JavaPostgreSqlRepl {
         String url0 = drv + nodes + "/" + databse + "?";
 
 	String url = url0 + master;
-        String user = "root";
-        String password = "";
+        String user = "test";
+        String password = "password";
 
 	//jdbc:postgresql://node1,node2,node3/accounting?targetServerType=preferSecondary&loadBalanceHosts=true
 	// Здесь, судя по логике, должен быть второй сервер
         String url2 = url0 + slave;
-	//"jdbc:postgresql://localhost:5432/test?targetServerType=preferSecondary&loadBalanceHosts=true";
-        String user2 = "root";
-        String password2 = "";
+	//"jdbc:postgresql://172.26.10.73:5000/test?targetServerType=preferSecondary&loadBalanceHosts=true";
+        String user2 = "test";
+        String password2 = "password";
 
 	Connection con = null, con2 = null;
 	Boolean flgErr = false;
