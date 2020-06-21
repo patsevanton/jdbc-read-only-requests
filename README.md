@@ -176,3 +176,29 @@ transact: 33400.46 (0.00) ms   select: 32965.08 (0.00) ms
 transact: 33394.38 (0.00) ms   select: 32948.28 (0.00) ms
 transact: 33332.10 (0.00) ms   select: 32897.06 (0.00) ms
 ```
+
+## Уменьшаем размер бд
+### Создаем таблицу scale_data в бд test от пользователя test
+```
+/usr/pgsql-12/bin/psql --host=localhost -U test test
+```
+
+```
+CREATE TABLE scale_data (
+   section NUMERIC NOT NULL,
+   id1     NUMERIC NOT NULL,
+   id2     NUMERIC NOT NULL
+);
+```
+
+### Генерируем данные в таблице scale_data
+```
+INSERT INTO scale_data
+SELECT sections.*, gen.*
+     , CEIL(RANDOM()*100) 
+  FROM GENERATE_SERIES(1, 300)     sections,
+       GENERATE_SERIES(1, 90000) gen
+ WHERE gen <= sections * 3000;
+```
+
+Проверяем размер БД после генерации данных:
