@@ -126,3 +126,13 @@ String url2 = "jdbc:postgresql://ip-адрес-Leader:5002/test?targetServerType
 javac -cp "./postgresql-42.2.14.jar" JavaPostgreSqlRepl.java
 java -classpath .:./postgresql-42.2.14.jar JavaPostgreSqlRepl
 ```
+
+Время выполнения транзакций и select, если идет обращение только на Leader
+```
+PostgreSQL 12.3 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-39), 64-bit
+transact: 197507.92 (0.00) ms   select: 51981.31 (0.00) ms
+transact: 33702.46 (0.00) ms   select: 45978.63 (0.00) ms
+transact: 34842.10 (0.00) ms   select: 33417.60 (0.00) ms
+transact: 33587.53 (0.00) ms   select: 32825.42 (0.00) ms
+transact: 33551.31 (0.00) ms   select: 32797.89 (0.00) ms
+```
