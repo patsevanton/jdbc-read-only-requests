@@ -19,6 +19,7 @@ public class JavaPostgreSqlRepl {
 
 	//jdbc:postgresql://node1,node2,node3/accounting?targetServerType=primary
 	String drv = "jdbc:postgresql://";
+	//String nodes = "172.26.10.73:5000";	// МЕНЯЕМ ЗДЕСЬ адреса, указываем все адреса (все запросы идут на master)
 	String nodes = "172.26.10.73:5000,172.26.10.73:5002";	// МЕНЯЕМ ЗДЕСЬ адреса, указываем все адреса (master и реплики)
 	String databse = "test";
 	String master = "targetServerType=primary";
