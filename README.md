@@ -82,7 +82,7 @@ INSERT INTO scale_data
 SELECT sections.*, gen.*
      , CEIL(RANDOM()*100) 
   FROM GENERATE_SERIES(1, 300)     sections,
-       GENERATE_SERIES(1, 90000) gen
+       GENERATE_SERIES(1, 300000) gen
  WHERE gen <= sections * 3000;
 ```
 
