@@ -64,8 +64,10 @@ wget https://jdbc.postgresql.org/download/postgresql-42.2.14.jar
 ```
 
 
-## Compile and run
+## If PostgreSQL Single, then compile and run
 ```
 javac -cp "./postgresql-42.2.14.jar" JavaPostgreSqlRepl.java
 java -classpath .:./postgresql-42.2.14.jar JavaPostgreSqlRepl
 ```
+
+## If PostgreSQL Cluster, then change jdbc
