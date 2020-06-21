@@ -119,11 +119,11 @@ String nodes = "ip-адрес-Leader:5000";
 
 А строку содержащую несколько нод закоментировать
 ```
-String nodes = "172.26.10.73:5000,172.26.10.73:5002";
+String nodes = "ip-адрес-Leader:5000,ip-адрес-Leader:5002";
 ```
 меняем на 
 ```
-//String nodes = "172.26.10.73:5000,172.26.10.73:5002";
+//String nodes = "ip-адрес-Leader:5000,ip-адрес-Leader:5002";
 ```
 
 Должно получиться примерно так:
@@ -154,27 +154,26 @@ transact: 1.11 (0.11) ms   select: 1.31 (0.12) ms
 
 ## Тестирование. Транзакции идут на Leader. Select идут на Sync Standby
 
-### Правим jdbc строку подключения в файле JavaPostgreSqlRepl.java
+### Правим строку String nodes в файле JavaPostgreSqlRepl.java
 ```
-String url = "jdbc:postgresql://localhost:5432/test?targetServerType=primary";
+String nodes = "ip-адрес-Leader:5000";
 ```
 Поменять на 
 ```
-String url = "jdbc:postgresql://ip-адрес-Leader:5000/test?targetServerType=primary";
+//String nodes = "ip-адрес-Leader:5000";
 ```
 
-А строку содержащую preferSecondary
+А строку содержащую несколько нод раскоментировать
 ```
-String url2 = "jdbc:postgresql://localhost:5432/test?targetServerType=preferSecondary&loadBalanceHosts=true";
+//String nodes = "ip-адрес-Leader:5000,ip-адрес-Leader:5002";
 ```
 меняем на 
 ```
-String url2 = "jdbc:postgresql://ip-адрес-Sync-Standby:5002/test?targetServerType=preferSecondary&loadBalanceHosts=true";
+String nodes = "ip-адрес-Leader:5000,ip-адрес-Leader:5002";
 ```
 
 Должно получиться примерно так:
-![](https://habrastorage.org/webt/2x/vs/s2/2xvss2qrlcawkmijnznrgz5yb_a.png)
-
+![](https://habrastorage.org/webt/_b/g2/jb/_bg2jbhbz697cry2ctrmwgv9k_m.png)
 
 ### Компилируем код и запускаем его
 ```
