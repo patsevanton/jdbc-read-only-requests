@@ -108,26 +108,26 @@ wget https://jdbc.postgresql.org/download/postgresql-42.2.14.jar
 
 ## Тестирование. Все запросы идут на Leader
 
-### Правим jdbc строку подключения в файле JavaPostgreSqlRepl.java
+### Правим строку String nodes в файле JavaPostgreSqlRepl.java
 ```
-String url = "jdbc:postgresql://localhost:5432/test?targetServerType=primary";
+String nodes = "172.26.10.73:5000";
 ```
 Поменять на 
 ```
-String url = "jdbc:postgresql://ip-адрес-Leader:5000/test?targetServerType=primary";
+String nodes = "ip-адрес-Leader:5000";
 ```
 
-А строку содержащую preferSecondary
+А строку содержащую несколько нод закоментировать
 ```
-String url2 = "jdbc:postgresql://localhost:5432/test?targetServerType=preferSecondary&loadBalanceHosts=true";
+String nodes = "172.26.10.73:5000,172.26.10.73:5002";
 ```
 меняем на 
 ```
-String url2 = "jdbc:postgresql://ip-адрес-Leader:5002/test?targetServerType=preferSecondary&loadBalanceHosts=true";
+//String nodes = "172.26.10.73:5000,172.26.10.73:5002";
 ```
 
 Должно получиться примерно так:
-![](https://habrastorage.org/webt/7y/e5/5b/7ye55bh_pyoktphlqnecd4qcux8.png)
+![](https://habrastorage.org/webt/_b/g2/jb/_bg2jbhbz697cry2ctrmwgv9k_m.png)
 
 
 ### Компилируем код и запускаем его
