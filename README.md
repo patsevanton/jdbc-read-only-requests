@@ -84,3 +84,12 @@ String url = "jdbc:postgresql://localhost:5432/test?targetServerType=primary";
 ```
 String url = "jdbc:postgresql://ip-адрес-Leader:5000/test?targetServerType=primary";
 ```
+
+А строку содержащую preferSecondary
+```
+String url2 = "jdbc:postgresql://localhost:5432/test?targetServerType=preferSecondary&loadBalanceHosts=true";
+```
+меняем на 
+```
+String url2 = "jdbc:postgresql://ip-адрес-Leader:5002/test?targetServerType=preferSecondary&loadBalanceHosts=true";
+```
