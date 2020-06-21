@@ -105,3 +105,8 @@ String url2 = "jdbc:postgresql://localhost:5432/test?targetServerType=preferSeco
 ```
 String url2 = "jdbc:postgresql://ip-адрес-Leader:5002/test?targetServerType=preferSecondary&loadBalanceHosts=true";
 ```
+
+Должно получиться примерно так:
+![](https://habrastorage.org/webt/wu/q0/1m/wuq01mkxbm0jeqxsh88vjbcc4v8.png)
+
+![](https://habrastorage.org/webt/j1/4b/xw/j14bxwjwu8jdabj7ygew94jcx8c.png)
