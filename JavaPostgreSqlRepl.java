@@ -19,21 +19,29 @@ public class JavaPostgreSqlRepl {
     public static void main(String[] args) {
 
 	//jdbc:postgresql://node1,node2,node3/accounting?targetServerType=primary
-        String url = "jdbc:postgresql://localhost:5432/test?targetServerType=primary";
-        String user = "test";
-        String password = "password";
+	String drv = "jdbc:postgresql://";
+	String nodes = "localhost:5432,ip:port";	// МЕНЯЕМ ЗДЕСЬ адреса, указываем все адреса (master и реплики)
+	String databse = "test";
+	String master = "targetServerType=primary";
+	String slave = "targetServerType=preferSecondary&loadBalanceHosts=true";
+
+        String url0 = drv + nodes + "/" + databse + "?";
+
+	String url = url0 + master;
+        String user = "root";
+        String password = "";
 
 	//jdbc:postgresql://node1,node2,node3/accounting?targetServerType=preferSecondary&loadBalanceHosts=true
 	// Здесь, судя по логике, должен быть второй сервер
-        String url2 = "jdbc:postgresql://localhost:5432/test?targetServerType=preferSecondary&loadBalanceHosts=true";
-        String user2 = "test";
-        String password2 = "password";
+        String url2 = url0 + slave;
+	//"jdbc:postgresql://localhost:5432/test?targetServerType=preferSecondary&loadBalanceHosts=true";
+        String user2 = "root";
+        String password2 = "";
 
 	Connection con = null, con2 = null;
 	Boolean flgErr = false;
 
         try {
-
 	    //DriverManager.registerDriver(new org.postgresql.Driver());
 	    Class.forName("org.postgresql.Driver");
 	    con = DriverManager.getConnection(url, user, password);
@@ -41,10 +49,18 @@ public class JavaPostgreSqlRepl {
             ResultSet rs = stmt.executeQuery("SELECT VERSION()");
 
             if (rs.next()) {
-                System.out.println(rs.getString(1));
+                System.out.println("Master: " + rs.getString(1));
             }
 	    stmt.close();
+
 	    con2 = DriverManager.getConnection(url2, user2, password2);
+            stmt = con.createStatement();
+            rs = stmt.executeQuery("SELECT VERSION()");
+
+            if (rs.next()) {
+                System.out.println("Slave: " + rs.getString(1));
+            }
+	    stmt.close();
         }
         catch(java.lang.ClassNotFoundException e) {
 	    System.err.print("ClassNotFoundException: ");
@@ -84,25 +100,25 @@ public class JavaPostgreSqlRepl {
         Statement stmt, stmt2;
 	ResultSet rs;
         String str, k;
-	String patt = "^(?:Planning|Execution)\\s+time:\\s+(.*?)\\s+ms"; // фильтр времени выполнения
+	String patt = "^\\s*(?:Planning|Execution)\\s+time:\\s+(.*?)\\s+ms"; // фильтр времени выполнения
 
 	try {
 
 //            stmt = con.createStatement();
 //while(true) {
-for(int i=0; i < 5; i++ ) { // заменить на while в релизе
-
-            stmt = con.createStatement();
-            stmt2 = con2.createStatement();
+for(int i=0; i < 10; i++ ) { // заменить на while в релизе
 
 	    s = "";
 	    sql = "";
 	    sql2 = "";
 
+// SELECT
+            stmt2 = con2.createStatement();
+
 	    rnd = ThreadLocalRandom.current().nextInt(min, max + 1);
 //	    rnd = min + (int)(Math.random() * ((max - min) + 1)); // случайное число для java < 7
 //*
-//	    sql = "EXPLAIN ANALYSE select id1 from scale_data where id1=" + rnd; // release
+//	    sql2 = "EXPLAIN ANALYSE select id1 from scale_data where id1=" + rnd; // release
 	    sql = "explain analyze select id1 from scale_data where section = 1 and id1=" + rnd;
 
 	    //startTime = System.currentTimeMillis();
@@ -116,20 +132,24 @@ for(int i=0; i < 5; i++ ) { // заменить на while в релизе
             //millis = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startTime);
 
 	    // получаем время выполнения на сервере
-	    double t_1 = 0.0;
+	    double server_time = 0.0;
             while (rs.next()) {
 		str = rs.getString(1);
 		if( str.matches(patt) ) {
-			t_1 += Double.parseDouble( str.replaceFirst(patt,"$1") );
+			server_time += Double.parseDouble( str.replaceFirst(patt,"$1") );
 		}
+		System.out.println( str );
             }
 
-	    s = "select: " + String.format("%.2f", millis) + " (" + String.format("%.2f", t_1) + ") ms";
+            stmt2.close();
+
+	    s = "select: " + String.format("%.2f", millis) + " (" + String.format("%.2f", server_time) + ") ms";
+
 
 //*/
 //*
-	// Update
-//            stmt = con.createStatement();
+	// UPDATE
+            stmt = con.createStatement();
 
 	    rnd2 = ThreadLocalRandom.current().nextInt(min, max + 1);
 	    //rnd2 = ThreadLocalRandom.current().nextInt(min2, max2 + 1);
@@ -152,21 +172,22 @@ for(int i=0; i < 5; i++ ) { // заменить на while в релизе
 
 	    //endTime = System.currentTimeMillis();
             millis = (double)TimeUnit.NANOSECONDS.toNanos(System.nanoTime() - startTime) / 1_000_000.0;
-	    t_1 = 0.0;
+	    server_time = 0.0;
             while (rs.next()) {
 		str = rs.getString(1);
 		if( str.matches(patt) ) {
-			t_1 += Double.parseDouble( str.replaceFirst(patt,"$1") );
+			server_time += Double.parseDouble( str.replaceFirst(patt,"$1") );
 		}
             }
 
+	    stmt.close();
+
+	    
             //System.out.println("1: " + sql);
             //System.out.println("2: " + sql2);
-	    s = "transact: " + String.format("%.2f", millis) + " (" + String.format("%.2f", t_1) + ") ms   " + s;
+	    s = "transact: " + String.format("%.2f", millis) + " (" + String.format("%.2f", server_time) + ") ms   " + s;
             System.out.println(s);
 
-	    stmt.close();
-	    stmt2.close();
 //*/
 } // for or while
 
