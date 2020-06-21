@@ -153,7 +153,7 @@ wget https://jdbc.postgresql.org/download/postgresql-42.2.14.jar
 ```
 
 ### Правим jdbc строку подключения в файле JavaPostgreSqlRepl.java
-
+```
 String url = "jdbc:postgresql://localhost:5432/test?targetServerType=primary";
 ```
 Поменять на 
