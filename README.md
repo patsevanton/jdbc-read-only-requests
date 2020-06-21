@@ -8,6 +8,8 @@ yum install -y java-1.8.0-openjdk-devel git
 ## PostgreSQL
 
 ### Install PostgreSQL
+Устанавливаем PostgreSQL 12 по инструции с сайта https://www.postgresql.org/download/linux/redhat/
+
 ```
 create user test with password 'password';
 create database test with owner test;
