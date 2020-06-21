@@ -102,7 +102,7 @@ patronictl -c /etc/patroni/patroni.yml list
 yum install -y java-1.8.0-openjdk-devel git
 ```
 
-Создаем postgresql юзера test и базу данных test
+## Создаем postgresql юзера test и базу данных test
 ```
 /usr/pgsql-12/bin/psql --host=localhost -U test test
 create user test with password 'password';
