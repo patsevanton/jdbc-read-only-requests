@@ -136,3 +136,44 @@ transact: 34842.10 (0.00) ms   select: 33417.60 (0.00) ms
 transact: 33587.53 (0.00) ms   select: 32825.42 (0.00) ms
 transact: 33551.31 (0.00) ms   select: 32797.89 (0.00) ms
 ```
+
+## Тестирование. Транзакции идут на Leader. Select идут на Perplica
+
+### Правим jdbc строку подключения в файле JavaPostgreSqlRepl.java
+```
+String url = "jdbc:postgresql://localhost:5432/test?targetServerType=primary";
+```
+Поменять на 
+```
+String url = "jdbc:postgresql://ip-адрес-Leader:5000/test?targetServerType=primary";
+```
+
+А строку содержащую preferSecondary
+```
+String url2 = "jdbc:postgresql://localhost:5432/test?targetServerType=preferSecondary&loadBalanceHosts=true";
+```
+меняем на 
+```
+String url2 = "jdbc:postgresql://ip-адрес-Leader:5002/test?targetServerType=preferSecondary&loadBalanceHosts=true";
+```
+
+Должно получиться примерно так:
+![](https://habrastorage.org/webt/7y/e5/5b/7ye55bh_pyoktphlqnecd4qcux8.png)
+
+
+### Компилируем код и запускаем его
+```
+javac -cp "./postgresql-42.2.14.jar" JavaPostgreSqlRepl.java
+java -classpath .:./postgresql-42.2.14.jar JavaPostgreSqlRepl
+```
+
+Время выполнения транзакций и select, если идет обращение только на Leader
+```
+PostgreSQL 12.3 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-39), 64-bit
+transact: 34454.46 (0.00) ms   select: 33060.40 (0.00) ms
+transact: 33405.12 (0.00) ms   select: 33026.28 (0.00) ms
+transact: 33400.46 (0.00) ms   select: 32965.08 (0.00) ms
+transact: 33394.38 (0.00) ms   select: 32948.28 (0.00) ms
+transact: 33332.10 (0.00) ms   select: 32897.06 (0.00) ms
+
+```
