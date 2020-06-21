@@ -97,6 +97,8 @@ cd jdbc-read-only-requests
 wget https://jdbc.postgresql.org/download/postgresql-42.2.14.jar
 ```
 
+## Тестирование. Все запросы идут на Leader
+
 ### Правим jdbc строку подключения в файле JavaPostgreSqlRepl.java
 ```
 String url = "jdbc:postgresql://localhost:5432/test?targetServerType=primary";
