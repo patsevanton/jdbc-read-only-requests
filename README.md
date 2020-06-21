@@ -106,7 +106,7 @@ cd jdbc-read-only-requests
 wget https://jdbc.postgresql.org/download/postgresql-42.2.14.jar
 ```
 
-## Тестирование. Все запросы идут на Leader
+## Тестирование. Все запросы идут на Leader. Запуск 1 экземпляра приложения
 
 ### Правим строку String nodes в файле JavaPostgreSqlRepl.java
 ```
@@ -152,7 +152,7 @@ transact: 1.55 (0.12) ms   select: 1.14 (0.11) ms
 transact: 1.11 (0.11) ms   select: 1.31 (0.12) ms
 ```
 
-## Тестирование. Транзакции идут на Leader. Select идут на Sync Standby
+## Тестирование. Транзакции идут на Leader. Select идут на Sync Standby. Запуск 1 экземпляра приложения
 
 ### Правим строку String nodes в файле JavaPostgreSqlRepl.java
 ```
@@ -197,4 +197,4 @@ transact: 0.80 (0.10) ms   select: 0.94 (0.09) ms
 transact: 0.86 (0.12) ms   select: 0.79 (0.09) ms
 ```
 
-## Запускаем 10 экземпляров приложения одновременно
+## Тестирование. Все запросы идут на Leader. Запуск 1 экземпляра приложения
