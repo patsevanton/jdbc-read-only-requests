@@ -88,7 +88,7 @@ SELECT sections.*, gen.*
 
 Проверяем размер БД после генерации данных:
 
-![](https://habrastorage.org/webt/ce/2a/st/ce2astdeuhsaq_7hk6oul4km4is.png)
+![](https://habrastorage.org/webt/xm/7b/th/xm7bthcpwlkcrzut32igvnam96a.png)
 
 ### Клонируем репо jdbc-read-only-requests
 ```
