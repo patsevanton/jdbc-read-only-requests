@@ -108,7 +108,7 @@ ERROR:  cannot execute CREATE ROLE in a read-only transaction
 test=> 
 ```
 
-### Правим jdbc строку подключения в файле 
+### Правим jdbc строку подключения в файле JavaPostgreSqlRepl.java
 
 String url = "jdbc:postgresql://localhost:5432/test?targetServerType=primary";
 ```
