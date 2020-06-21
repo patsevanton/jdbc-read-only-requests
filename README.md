@@ -82,11 +82,12 @@ INSERT INTO scale_data
 SELECT sections.*, gen.*
      , CEIL(RANDOM()*100) 
   FROM GENERATE_SERIES(1, 300)     sections,
-       GENERATE_SERIES(1, 300000) gen
+       GENERATE_SERIES(1, 90000) gen
  WHERE gen <= sections * 3000;
 ```
 
-### Кластеризуем таблицу scale_data
+### Создаем индекс и кластеризуем таблицу scale_data
+Без индекса update и select будут упираться в диск, если бд не влазит в ОЗУ. А это мешает эксперименту.
 ```
 CREATE INDEX scale_slow ON scale_data (section, id1, id2);
 
