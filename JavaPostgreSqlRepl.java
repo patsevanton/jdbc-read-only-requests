@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
-
 import java.util.regex.Pattern;  
 import java.util.regex.Matcher; 
 
@@ -100,7 +99,7 @@ public class JavaPostgreSqlRepl {
         Statement stmt, stmt2;
 	ResultSet rs;
         String str, k;
-	String patt = "^\\s*(?:Planning|Execution)\\s+time:\\s+(.*?)\\s+ms"; // фильтр времени выполнения
+	String patt = "^\\s*(?:Planning|Execution)\\s+[T|t]ime:\\s+(.*?)\\s+ms"; // фильтр времени выполнения
 
 	try {
 
