@@ -121,7 +121,7 @@ String url2 = "jdbc:postgresql://ip-адрес-Leader:5002/test?targetServerType
 ![](https://habrastorage.org/webt/7y/e5/5b/7ye55bh_pyoktphlqnecd4qcux8.png)
 
 
-### Rомпилируем код и запускаем его
+### Компилируем код и запускаем его
 ```
 javac -cp "./postgresql-42.2.14.jar" JavaPostgreSqlRepl.java
 java -classpath .:./postgresql-42.2.14.jar JavaPostgreSqlRepl
