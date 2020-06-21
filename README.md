@@ -108,14 +108,8 @@ ERROR:  cannot execute CREATE ROLE in a read-only transaction
 test=> 
 ```
 
-### If PostgreSQL Cluster, then change jdbc
+### Правим jdbc строку подключения в файле 
 
-Находим IP Leader с помощью команды
-```
-patronictl -c /etc/patroni/patroni.yml list
-```
-В файле JavaPostgreSqlRepl.java
-```
 String url = "jdbc:postgresql://localhost:5432/test?targetServerType=primary";
 ```
 Поменять на 
