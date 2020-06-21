@@ -97,7 +97,7 @@ patronictl -c /etc/patroni/patroni.yml list
 ```
 ![](https://habrastorage.org/webt/j1/4b/xw/j14bxwjwu8jdabj7ygew94jcx8c.png)
 
-### Устанавливаем зависимости
+### Устанавливаем зависимости на Leader, так как на нем будем запускать Java приложение
 ```
 yum install -y java-1.8.0-openjdk-devel git
 ```
