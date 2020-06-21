@@ -138,12 +138,18 @@ java -classpath .:./postgresql-42.2.14.jar JavaPostgreSqlRepl
 
 Время выполнения транзакций и select, если идет обращение только на Leader
 ```
-PostgreSQL 12.3 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-39), 64-bit
-transact: 197507.92 (0.00) ms   select: 51981.31 (0.00) ms
-transact: 33702.46 (0.00) ms   select: 45978.63 (0.00) ms
-transact: 34842.10 (0.00) ms   select: 33417.60 (0.00) ms
-transact: 33587.53 (0.00) ms   select: 32825.42 (0.00) ms
-transact: 33551.31 (0.00) ms   select: 32797.89 (0.00) ms
+Master: PostgreSQL 12.3 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-39), 64-bit
+Slave: PostgreSQL 12.3 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-39), 64-bit
+transact: 6.00 (2.60) ms   select: 31.07 (10.99) ms
+transact: 0.80 (0.11) ms   select: 0.72 (0.13) ms
+transact: 0.75 (0.10) ms   select: 0.56 (0.10) ms
+transact: 0.75 (0.12) ms   select: 0.60 (0.09) ms
+transact: 0.82 (0.13) ms   select: 0.59 (0.09) ms
+transact: 1.30 (0.10) ms   select: 1.04 (0.09) ms
+transact: 1.74 (0.10) ms   select: 2.90 (0.10) ms
+transact: 2.25 (0.11) ms   select: 1.48 (0.10) ms
+transact: 1.55 (0.12) ms   select: 1.14 (0.11) ms
+transact: 1.11 (0.11) ms   select: 1.31 (0.12) ms
 ```
 
 ## Тестирование. Транзакции идут на Leader. Select идут на Sync Standby
