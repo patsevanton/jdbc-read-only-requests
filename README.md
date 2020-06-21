@@ -5,7 +5,7 @@ Sample console Java app for jdbc read only requests
 
 ## Характеристики PostgreSQL кластера
 
-Возьмем виртуальные машины по 2 ГБ ОЗУ
+Возьмем виртуальные машины для PostgreSQL по 2 ГБ ОЗУ, чтобы бд не ввлезала в память и 3 ноды Etcd по 1ГБ.
 
 ## Установка
 
