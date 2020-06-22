@@ -77,14 +77,6 @@ patronictl -c /etc/patroni/patroni.yml list
 yum install -y java-1.8.0-openjdk-devel git mc
 ```
 
-## Создаем postgresql юзера test и базу данных test
-```
-su - postgres
-psql
-create user test with password 'password';
-create database test with owner test;
-```
-
 ### Проверяем Read-Only реплику
 ```
 /usr/pgsql-12/bin/psql --host=172.26.10.74 -U test test
@@ -99,7 +91,7 @@ test=>
 
 ### Создаем таблицу scale_data в бд test от пользователя test
 ```
-/usr/pgsql-12/bin/psql --host=localhost -U test test
+/usr/pgsql-12/bin/psql --host=172.26.10.73 -U test test
 ```
 
 ```
