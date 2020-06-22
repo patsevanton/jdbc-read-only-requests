@@ -41,7 +41,8 @@ install_pgbouncer: false
 ```
 postgresql_users:
    - {name: "test", password: "password"}
-   - {name: "benchmark", password: "password"}
+   - {name: "pgbenchwrite", password: "password"}
+   - {name: "pgbenchread", password: "password"}
 ```
 
 Добавляем создание бд test с owner test
@@ -49,7 +50,7 @@ postgresql_users:
 ```
 postgresql_databases:
    - {db: "test", encoding: "UTF8", lc_collate: "ru_RU.UTF-8", lc_ctype: "ru_RU.UTF-8", owner: "test"}
-   - {db: "benchmark", encoding: "UTF8", lc_collate: "ru_RU.UTF-8", lc_ctype: "ru_RU.UTF-8", owner: "benchmark"}
+   - {db: "pgbenchread", encoding: "UTF8", lc_collate: "ru_RU.UTF-8", lc_ctype: "ru_RU.UTF-8", owner: "pgbenchread"}
 ```
 
 Увеличиваем max_connections
@@ -65,7 +66,8 @@ postgresql_databases:
 postgresql_pg_hba:
 ...
   - {type: "host", database: "test", user: "test", address: "0.0.0.0/0", method: "md5"}
-  - {type: "host", database: "benchmark", user: "benchmark", address: "0.0.0.0/0", method: "md5"}
+  - {type: "host", database: "pgbenchwrite", user: "pgbenchwrite", address: "0.0.0.0/0", method: "md5"}
+  - {type: "host", database: "pgbenchread", user: "pgbenchread", address: "0.0.0.0/0", method: "md5"}
 ```
 
 Тюнинг параметров можно выполнить здесь: http://pgconfigurator.cybertec.at/
@@ -87,21 +89,22 @@ patronictl -c /etc/patroni/patroni.yml list
 Заполняем тестовую базу
 
 ```
-/usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5000 -U benchmark -i -s 150 benchmark
+/usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5000 -U pgbenchwrite -i -s 150 pgbenchwrite
+/usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5000 -U pgbenchread -i -s 150 pgbenchread
 ```
 
 Запускаем 2 консолях одновременно pgbench write-only и select-only, где все коннекты идут к master
 
 ```
-/usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5000 -U benchmark -c 50 -j 2 -P 60 -T 600 -N benchmark
-/usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5000 -U benchmark -c 50 -j 2 -P 60 -T 600 -S benchmark
+/usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5000 -U pgbenchwrite -c 50 -j 2 -P 60 -T 600 -N pgbenchwrite
+/usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5000 -U pgbenchread -c 50 -j 2 -P 60 -T 600 -S pgbenchread
 ```
 
 Запускаем 2 консолях одновременно pgbench write-only и select-only, где коннект write-only идет к master, а коннект select-only идет на реплику.
 
 ```
-/usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5000 -U benchmark -c 50 -j 2 -P 60 -T 600 -N benchmark
-/usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5002 -U benchmark -c 50 -j 2 -P 60 -T 600 -S benchmark
+/usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5000 -U pgbenchwrite -c 50 -j 2 -P 60 -T 600 -N pgbenchwrite
+/usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5002 -U pgbenchread -c 50 -j 2 -P 60 -T 600 -S pgbenchread
 ```
 
 ### Устанавливаем зависимости на Leader, так как на нем будем запускать Java приложение
@@ -359,3 +362,4 @@ ps aux | grep java | grep -v grep | wc -l
 
 https://docs.google.com/spreadsheets/d/1jw5DAsHFNsO4wmYUxR2TmbGc1CS9J0w2beNhfI0NLhQ/edit?usp=sharing
 
+Следующий этап протестировать Java приложение с Connection Pool (Например, HikariCP, C3PO)
