@@ -87,21 +87,21 @@ patronictl -c /etc/patroni/patroni.yml list
 Заполняем тестовую базу
 
 ```
-pgbench -h 172.26.10.73 -p 5000 -U benchmark -i -s 150 benchmark
+/usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5000 -U benchmark -i -s 150 benchmark
 ```
 
 Запускаем 2 консолях одновременно pgbench write-only и select-only, где все коннекты идут к master
 
 ```
-pgbench -h 172.26.10.73 -p 5000 -U benchmark -c 50 -j 2 -P 60 -T 600 -N benchmark
-pgbench -h 172.26.10.73 -p 5000 -U benchmark -c 50 -j 2 -P 60 -T 600 -S benchmark
+/usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5000 -U benchmark -c 50 -j 2 -P 60 -T 600 -N benchmark
+/usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5000 -U benchmark -c 50 -j 2 -P 60 -T 600 -S benchmark
 ```
 
 Запускаем 2 консолях одновременно pgbench write-only и select-only, где коннект write-only идет к master, а коннект select-only идет на реплику.
 
 ```
-pgbench -h 172.26.10.73 -p 5000 -U benchmark -c 50 -j 2 -P 60 -T 600 -N benchmark
-pgbench -h 172.26.10.73 -p 5002 -U benchmark -c 50 -j 2 -P 60 -T 600 -S benchmark
+/usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5000 -U benchmark -c 50 -j 2 -P 60 -T 600 -N benchmark
+/usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5002 -U benchmark -c 50 -j 2 -P 60 -T 600 -S benchmark
 ```
 
 ### Устанавливаем зависимости на Leader, так как на нем будем запускать Java приложение
