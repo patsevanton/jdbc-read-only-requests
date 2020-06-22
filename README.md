@@ -74,7 +74,7 @@ patronictl -c /etc/patroni/patroni.yml list
 
 ### Устанавливаем зависимости на Leader, так как на нем будем запускать Java приложение
 ```
-yum install -y java-1.8.0-openjdk-devel git
+yum install -y java-1.8.0-openjdk-devel git mc
 ```
 
 ## Создаем postgresql юзера test и базу данных test
