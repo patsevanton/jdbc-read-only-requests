@@ -355,3 +355,7 @@ ps aux | grep java | grep -v grep | wc -l
 | Время SQL select для Java приложения на Replica | Время SQL select на самом PostgreSQL сервере Replica |
 | 3,49                                            | 0,10                                                 |
 
+Исходные данные можно посмотреть по ссылке
+
+https://docs.google.com/spreadsheets/d/1jw5DAsHFNsO4wmYUxR2TmbGc1CS9J0w2beNhfI0NLhQ/edit?usp=sharing
+
