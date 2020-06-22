@@ -100,12 +100,142 @@ patronictl -c /etc/patroni/patroni.yml list
 /usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5000 -U pgbenchread -c 50 -j 2 -P 60 -T 600 -S pgbenchread
 ```
 
+Вывод pgbench write-only:
+
+```
+/usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5000 -U pgbenchwrite -c 50 -j 2 -P 60 -T 600 -N pgbenchwrite
+Password: 
+starting vacuum...end.
+progress: 60.0 s, 113.8 tps, lat 436.492 ms stddev 228.613
+progress: 120.0 s, 112.1 tps, lat 445.698 ms stddev 181.140
+progress: 180.0 s, 119.9 tps, lat 412.778 ms stddev 400.669
+progress: 240.0 s, 110.7 tps, lat 452.843 ms stddev 364.284
+progress: 300.0 s, 38.2 tps, lat 1284.131 ms stddev 868.801
+progress: 360.0 s, 52.2 tps, lat 983.476 ms stddev 859.265
+progress: 420.0 s, 62.9 tps, lat 791.075 ms stddev 704.830
+progress: 480.0 s, 70.6 tps, lat 698.554 ms stddev 725.389
+progress: 540.0 s, 68.9 tps, lat 739.978 ms stddev 787.998
+progress: 600.0 s, 75.3 tps, lat 662.032 ms stddev 721.487
+transaction type: <builtin: simple update>
+scaling factor: 150
+query mode: simple
+number of clients: 50
+number of threads: 2
+duration: 600 s
+number of transactions actually processed: 49527
+latency average = 606.825 ms
+latency stddev = 608.772 ms
+tps = 82.005351 (including connections establishing)
+tps = 82.006115 (excluding connections establishing)
+```
+
+Вывод pgbench select-only:
+
+```
+/usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5000 -U pgbenchread -c 50 -j 2 -P 60 -T 600 -S pgbenchread
+Password: 
+starting vacuum...end.
+progress: 60.0 s, 88.6 tps, lat 559.665 ms stddev 169.444
+progress: 120.0 s, 99.5 tps, lat 503.239 ms stddev 191.487
+progress: 180.0 s, 111.4 tps, lat 448.638 ms stddev 823.392
+progress: 240.0 s, 115.4 tps, lat 433.728 ms stddev 232.107
+progress: 300.0 s, 75.2 tps, lat 664.727 ms stddev 442.582
+progress: 360.0 s, 115.1 tps, lat 433.675 ms stddev 392.391
+progress: 420.0 s, 123.1 tps, lat 407.399 ms stddev 461.501
+progress: 480.0 s, 135.7 tps, lat 366.747 ms stddev 514.208
+progress: 540.0 s, 119.9 tps, lat 416.024 ms stddev 529.415
+progress: 600.0 s, 112.5 tps, lat 446.807 ms stddev 607.408
+transaction type: <builtin: select only>
+scaling factor: 150
+query mode: simple
+number of clients: 50
+number of threads: 2
+duration: 600 s
+number of transactions actually processed: 65823
+latency average = 455.912 ms
+latency stddev = 490.338 ms
+tps = 109.546152 (including connections establishing)
+tps = 109.547312 (excluding connections establishing)
+```
+
 Запускаем 2 консолях одновременно pgbench write-only и select-only, где коннект write-only идет к master, а коннект select-only идет на реплику.
 
 ```
 /usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5000 -U pgbenchwrite -c 50 -j 2 -P 60 -T 600 -N pgbenchwrite
 /usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5002 -U pgbenchread -c 50 -j 2 -P 60 -T 600 -S pgbenchread
 ```
+
+Вывод pgbench write-only:
+
+```
+/usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5000 -U pgbenchwrite -c 50 -j 2 -P 60 -T 600 -N pgbenchwrite
+Password: 
+starting vacuum...end.
+progress: 60.0 s, 171.5 tps, lat 290.534 ms stddev 198.945
+progress: 120.0 s, 95.2 tps, lat 524.225 ms stddev 836.995
+progress: 180.0 s, 41.6 tps, lat 1172.546 ms stddev 1184.899
+progress: 240.0 s, 106.4 tps, lat 479.830 ms stddev 613.741
+progress: 300.0 s, 107.4 tps, lat 456.684 ms stddev 554.722
+progress: 360.0 s, 126.7 tps, lat 403.261 ms stddev 425.490
+progress: 420.0 s, 171.8 tps, lat 290.589 ms stddev 306.722
+progress: 480.0 s, 119.9 tps, lat 413.012 ms stddev 433.962
+progress: 540.0 s, 165.5 tps, lat 305.434 ms stddev 309.429
+progress: 600.0 s, 134.4 tps, lat 363.495 ms stddev 312.672
+transaction type: <builtin: simple update>
+scaling factor: 150
+query mode: simple
+number of clients: 50
+number of threads: 2
+duration: 600 s
+number of transactions actually processed: 74483
+latency average = 402.763 ms
+latency stddev = 515.695 ms
+tps = 124.006808 (including connections establishing)
+tps = 124.008050 (excluding connections establishing)
+```
+
+Вывод pgbench select-only:
+
+```
+/usr/pgsql-12/bin/pgbench -h 172.26.10.73 -p 5002 -U pgbenchread -c 50 -j 2 -P 60 -T 600 -S pgbenchread
+Password: 
+starting vacuum...ERROR:  cannot execute VACUUM during recovery
+(ignoring this error and continuing anyway)
+ERROR:  cannot execute VACUUM during recovery
+(ignoring this error and continuing anyway)
+ERROR:  cannot execute TRUNCATE TABLE in a read-only transaction
+(ignoring this error and continuing anyway)
+end.
+progress: 60.0 s, 170.8 tps, lat 291.310 ms stddev 115.079
+progress: 120.0 s, 155.4 tps, lat 320.284 ms stddev 232.217
+progress: 180.0 s, 153.7 tps, lat 326.370 ms stddev 284.169
+progress: 240.0 s, 211.0 tps, lat 237.428 ms stddev 210.316
+progress: 300.0 s, 269.6 tps, lat 185.419 ms stddev 169.064
+progress: 360.0 s, 273.1 tps, lat 183.099 ms stddev 144.569
+progress: 420.0 s, 294.4 tps, lat 169.912 ms stddev 128.209
+progress: 480.0 s, 311.2 tps, lat 160.646 ms stddev 115.194
+progress: 540.0 s, 317.8 tps, lat 157.084 ms stddev 113.825
+progress: 600.0 s, 319.5 tps, lat 156.751 ms stddev 112.012
+transaction type: <builtin: select only>
+scaling factor: 150
+query mode: simple
+number of clients: 50
+number of threads: 2
+duration: 600 s
+number of transactions actually processed: 148638
+latency average = 201.815 ms
+latency stddev = 169.752 ms
+tps = 247.553623 (including connections establishing)
+tps = 247.556199 (excluding connections establishing)
+```
+
+**Улучшение для write запросов в тесте pgbench при переводе SELECT запросов на реплику:**
+
+**(124-82)/82=0.51 или 51%**
+
+**Улучшение для select запросов в тесте pgbench при переводе SELECT запросов на реплику:**
+
+**(247-109)/109=1.26 или 126%**
 
 ### Устанавливаем зависимости на Leader, так как на нем будем запускать Java приложение
 
