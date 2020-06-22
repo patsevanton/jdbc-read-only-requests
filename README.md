@@ -41,6 +41,7 @@ install_pgbouncer: false
 ```
 postgresql_users:
    - {name: "test", password: "password"}
+   - {name: "benchmark", password: "password"}
 ```
 
 Добавляем создание бд test с owner test
@@ -48,6 +49,7 @@ postgresql_users:
 ```
 postgresql_databases:
    - {db: "test", encoding: "UTF8", lc_collate: "ru_RU.UTF-8", lc_ctype: "ru_RU.UTF-8", owner: "test"}
+   - {db: "benchmark", encoding: "UTF8", lc_collate: "ru_RU.UTF-8", lc_ctype: "ru_RU.UTF-8", owner: "benchmark"}
 ```
 
 Увеличиваем max_connections
@@ -63,9 +65,8 @@ postgresql_databases:
 postgresql_pg_hba:
 ...
   - {type: "host", database: "test", user: "test", address: "0.0.0.0/0", method: "md5"}
+  - {type: "host", database: "benchmark", user: "benchmark", address: "0.0.0.0/0", method: "md5"}
 ```
-
-
 
 Тюнинг параметров можно выполнить здесь: http://pgconfigurator.cybertec.at/
 
@@ -79,7 +80,29 @@ patronictl -c /etc/patroni/patroni.yml list
 
 
 
-## Проверка pgbench
+## Тестирование с использованием pgbench
+
+Так как pgbench-у нельзя указать ip для реплики, то запустим 2 экземпляра pgbench: первый будет создавать update, второй будетсоздавать только select-only нагрузку.
+
+Заполняем тестовую базу
+
+```
+pgbench -h 172.26.10.73 -p 5000 -U benchmark -i -s 150 benchmark
+```
+
+Запускаем 2 консолях одновременно pgbench write-only и select-only, где все коннекты идут к master
+
+```
+pgbench -h 172.26.10.73 -p 5000 -U benchmark -c 50 -j 2 -P 60 -T 600 -N benchmark
+pgbench -h 172.26.10.73 -p 5000 -U benchmark -c 50 -j 2 -P 60 -T 600 -S benchmark
+```
+
+Запускаем 2 консолях одновременно pgbench write-only и select-only, где коннект write-only идет к master, а коннект select-only идет на реплику.
+
+```
+pgbench -h 172.26.10.73 -p 5000 -U benchmark -c 50 -j 2 -P 60 -T 600 -N benchmark
+pgbench -h 172.26.10.73 -p 5002 -U benchmark -c 50 -j 2 -P 60 -T 600 -S benchmark
+```
 
 ### Устанавливаем зависимости на Leader, так как на нем будем запускать Java приложение
 
