@@ -15,7 +15,10 @@ git clone https://github.com/vitabaks/postgresql_cluster
 ```
 Изменяем адреса серверов в inventory на свои. 
 
+Правим параметры в var/main.yaml
+
 Выставляем синхронный режим
+
 ```
 synchronous_mode: true
 ```
@@ -28,7 +31,38 @@ with_haproxy_load_balancing: true
 install_pgbouncer: false
 ```
 
-Нужно поправить конфигурацию Postgresql.conf в vars/main.yml, например по http://pgconfigurator.cybertec.at/
+Добавляем создание пользователя test с паролем password
+
+```
+postgresql_users:
+   - {name: "test", password: "password"}
+```
+
+Добавляем создание бд test с owner test
+
+```
+postgresql_databases:
+   - {db: "test", encoding: "UTF8", lc_collate: "ru_RU.UTF-8", lc_ctype: "ru_RU.UTF-8", owner: "test"}
+```
+
+Увеличиваем max_connections
+
+```
+ postgresql_parameters:
+  - {option: "max_connections", value: "150"}
+```
+
+Добавляем бд и юзера test в pg_hba
+
+```
+postgresql_pg_hba:
+...
+  - {type: "host", database: "test", user: "test", address: "0.0.0.0/0", method: "md5"}
+```
+
+
+
+Тюнинг параметров можно выполнить здесь: http://pgconfigurator.cybertec.at/
 
 ## Проверка кластера
 
