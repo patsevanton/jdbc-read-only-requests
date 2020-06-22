@@ -1,5 +1,10 @@
-# jdbc-read-only-requests
-Sample console Java app for jdbc read only requests
+# Тестирование горизонтального масштабирования SELECT запросов на реплику
+
+Цель данного поста протестировать горизонтальное масштабирование SELECT запросов на реплику.
+
+Схема горизонтального масштабирования примерно такая.
+
+![](https://habrastorage.org/webt/op/zi/t0/opzit0s2opxwhigvzdmpubiypry.png)
 
 ## PostgreSQL кластер
 
@@ -72,7 +77,12 @@ patronictl -c /etc/patroni/patroni.yml list
 ```
 ![](https://habrastorage.org/webt/14/g9/kl/14g9kluwlob-bcp3nkci4huoyoe.png)
 
+
+
+## Проверка pgbench
+
 ### Устанавливаем зависимости на Leader, так как на нем будем запускать Java приложение
+
 ```
 yum install -y java-1.8.0-openjdk-devel git mc
 ```
@@ -155,27 +165,22 @@ String nodes = "ip-адрес-Leader:5000,ip-адрес-Leader:5002";
 Должно получиться примерно так:
 ![](https://habrastorage.org/webt/_b/g2/jb/_bg2jbhbz697cry2ctrmwgv9k_m.png)
 
-Активируем бесконечный цикл SQL запросов в Java приложении. Переходим на 108 строку и расскоментируем `while(true) {`, комментируем `for(int i=0; i < 100; i++ ) {`
-
-```
-while(true) {
-//for(int i=0; i < 100; i++ ) {
-```
-
-Должно получиться примерно так:
-
-![](https://habrastorage.org/webt/bb/wi/jd/bbwijd1huch6osw9matusiqlmna.png)
-
-
-
 ### Компилируем код и запускаем его
+
+Компилируем код
 
 ```
 javac -cp "./postgresql-42.2.14.jar" JavaPostgreSqlRepl.java
+```
+
+Запускаем Java приложение
+
+```
 java -classpath .:./postgresql-42.2.14.jar JavaPostgreSqlRepl
 ```
 
 Время выполнения транзакций, которые идут на Leader, и select, которые идут на Replica
+
 ```
 Master: PostgreSQL 12.3 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-39), 64-bit
 Slave: PostgreSQL 12.3 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 4.8.5 20150623 (Red Hat 4.8.5-39), 64-bit
@@ -215,8 +220,15 @@ String nodes = "ip-адрес-Leader:5000,ip-адрес-Leader:5002";
 ![](https://habrastorage.org/webt/0i/hk/ft/0ihkft7bcclqzt8cwexsler0zf4.png)
 
 ### Компилируем код и запускаем его
+Компилируем код
+
 ```
 javac -cp "./postgresql-42.2.14.jar" JavaPostgreSqlRepl.java
+```
+
+Запускаем Java приложение
+
+```
 java -classpath .:./postgresql-42.2.14.jar JavaPostgreSqlRepl
 ```
 
@@ -236,4 +248,63 @@ transact: 0.80 (0.10) ms   select: 0.94 (0.09) ms
 transact: 0.86 (0.12) ms   select: 0.79 (0.09) ms
 ```
 
-## Тестирование. Все запросы идут на Leader. Запуск 1 экземпляра приложения
+Как видим время запросов поменялось не сильно.
+
+### Запуск нескольких экземпляров Java приложения
+
+Активируем бесконечный цикл SQL запросов в Java приложении. Переходим на 108 строку и расскоментируем `while(true) {`, комментируем `for(int i=0; i < 100; i++ ) {`
+
+```
+while(true) {
+//for(int i=0; i < 100; i++ ) {
+```
+
+Должно получиться примерно так:
+
+![](https://habrastorage.org/webt/bb/wi/jd/bbwijd1huch6osw9matusiqlmna.png)
+
+### Тестирование. Все запросы идут на Leader. Запуск 50 экземпляров приложения
+
+Правим строку String nodes в файле JavaPostgreSqlRepl.java
+
+```
+String nodes = "172.26.10.73:5000";
+```
+
+Поменять на 
+
+```
+String nodes = "ip-адрес-Leader:5000";
+```
+
+А строку содержащую несколько нод закоментировать
+
+```
+String nodes = "ip-адрес-Leader:5000,ip-адрес-Leader:5002";
+```
+
+меняем на 
+
+```
+//String nodes = "ip-адрес-Leader:5000,ip-адрес-Leader:5002";
+```
+
+Должно получиться примерно так:
+![](https://habrastorage.org/webt/_b/g2/jb/_bg2jbhbz697cry2ctrmwgv9k_m.png)
+
+Компилируем код
+
+```
+javac -cp "./postgresql-42.2.14.jar" JavaPostgreSqlRepl.java
+```
+
+Запускаем Java приложение
+
+```
+java -classpath .:./postgresql-42.2.14.jar JavaPostgreSqlRepl
+```
+
+Запустим 50 экземпляров Java приложения в бесконечном цикле.
+
+Время выполнения транзакций и select, если идет обращение только на Leader
+
