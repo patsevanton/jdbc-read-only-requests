@@ -321,19 +321,37 @@ String nodes = "ip-адрес-Leader:5000,ip-адрес-Leader:5002";
 javac -cp "./postgresql-42.2.14.jar" JavaPostgreSqlRepl.java
 ```
 
-Запускаем Java приложение
+Запускаем 49 раз Java приложение в фоне в бесконечном цикле.
 
 ```
-java -classpath .:./postgresql-42.2.14.jar JavaPostgreSqlRepl
+java -classpath .:./postgresql-42.2.14.jar JavaPostgreSqlRepl > /dev/null 2>&1 &
 ```
 
-Запустим 50 экземпляров Java приложения в бесконечном цикле.
-
-Проверяем что у нас запущено 50 приложений java
+Проверяем что у нас запущено 49 приложений java
 
 ```
-ps aux | grep java | wc -l
+ps aux | grep java | grep -v grep | wc -l
 ```
+
+Смотрим какие процессы postgres запущены на реплике
+
+![](https://habrastorage.org/webt/an/aq/dg/anaqdg4k0zeq5rintiwixch03lm.png)
+
+Запускаем Java приложение чтобы увидеть среднее время SQL запросов.
 
 Время выполнения транзакций и select, если идет обращение только на Leader
+
+| Время SQL update для Java приложения на Leader | Время SQL update на самом PostgreSQL сервере Leader |
+| ---------------------------------------------- | --------------------------------------------------- |
+| 17,56                                          | 0,13                                                |
+| Время SQL select для Java приложения на Leader | Время SQL select на самом PostgreSQL сервере Leader |
+| 8,51                                           | 0,12                                                |
+
+Время выполнения транзакций, которые идут на Leader и select, которые идут на Replica
+
+| Время SQL update для Java приложения на Leader  | Время SQL update на самом PostgreSQL сервере Leader  |
+| ----------------------------------------------- | ---------------------------------------------------- |
+| 9,07                                            | 0,12                                                 |
+| Время SQL select для Java приложения на Replica | Время SQL select на самом PostgreSQL сервере Replica |
+| 3,49                                            | 0,10                                                 |
 
