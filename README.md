@@ -155,8 +155,21 @@ String nodes = "ip-адрес-Leader:5000,ip-адрес-Leader:5002";
 Должно получиться примерно так:
 ![](https://habrastorage.org/webt/_b/g2/jb/_bg2jbhbz697cry2ctrmwgv9k_m.png)
 
+Активируем бесконечный цикл SQL запросов в Java приложении. Переходим на 108 строку и расскоментируем `while(true) {`, комментируем `for(int i=0; i < 100; i++ ) {`
+
+```
+while(true) {
+//for(int i=0; i < 100; i++ ) {
+```
+
+Должно получиться примерно так:
+
+![](https://habrastorage.org/webt/bb/wi/jd/bbwijd1huch6osw9matusiqlmna.png)
+
+
 
 ### Компилируем код и запускаем его
+
 ```
 javac -cp "./postgresql-42.2.14.jar" JavaPostgreSqlRepl.java
 java -classpath .:./postgresql-42.2.14.jar JavaPostgreSqlRepl
