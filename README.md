@@ -492,4 +492,4 @@ ps aux | grep java | grep -v grep | wc -l
 
 https://docs.google.com/spreadsheets/d/1jw5DAsHFNsO4wmYUxR2TmbGc1CS9J0w2beNhfI0NLhQ/edit?usp=sharing
 
-Следующий этап протестировать Java приложение с Connection Pool (Например, HikariCP, C3PO)
+Чтобы подтвердить тесты pgbench из java приложений и потдвердить улучшение времени SQL запросов  (TPS) на самом сервере приложений, нужно тестировать многопоточное Java приложение с Connection Pool (Например, HikariCP, C3PO) , которое будет одновременно отправлять несколько десятков SQL запросов так как это делает pgbench.
