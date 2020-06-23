@@ -237,6 +237,8 @@ tps = 247.556199 (excluding connections establishing)
 
 **(247-109)/109=1.26 или 126%**
 
+![](https://habrastorage.org/webt/xz/o4/tr/xzo4tr5guxhcy_ytb5ygovfmsyc.png)
+
 ### Устанавливаем зависимости на Leader, так как на нем будем запускать Java приложение
 
 ```
